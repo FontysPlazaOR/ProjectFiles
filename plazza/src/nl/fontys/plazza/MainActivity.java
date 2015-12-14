@@ -26,7 +26,7 @@ public class MainActivity extends Activity {
 	}
 	
 	/**
-	 * what happens when the button is clikcked
+	 * what happens when the button is clicked
 	 * 
 	 *
 	 */

@@ -5,7 +5,7 @@ import android.opengl.GLSurfaceView;
 
 public class PlazzaSurfaceView  extends GLSurfaceView  {
 	private final PlazzaRenderer mRenderer;
-
+	private Door mDoor;
     public PlazzaSurfaceView(Context context) {
         super(context);
 
