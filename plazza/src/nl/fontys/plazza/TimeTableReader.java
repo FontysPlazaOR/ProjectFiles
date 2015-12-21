@@ -1,8 +1,11 @@
 package nl.fontys.plazza;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Calendar;
 
+/*
+ * a class to read the time table data
+ */
 public class TimeTableReader {
 
 	/**
@@ -19,5 +22,15 @@ public class TimeTableReader {
 	
 		
 		return data;
+	}
+	
+	/**
+	 * gets the day of the week,
+	 * Sunday=0
+	 * @return current day
+	 */
+	public int getCurrentDayOfWeek() {
+		Calendar c = Calendar.getInstance(); 
+		return c.get(Calendar.DAY_OF_WEEK);
 	}
 }
