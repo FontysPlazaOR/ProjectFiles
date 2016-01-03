@@ -28,6 +28,10 @@
             android:name=".RenderActivity"
             android:label="@string/title_activity_render" >
         </activity>
+        <activity
+            android:name=".ListMenuActivity"
+            android:label="@string/title_activity_list_menu" >
+        </activity>
     </application>
 
 </manifest>

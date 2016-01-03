@@ -21,7 +21,7 @@ public class MainActivity extends Activity {
 	//QR Scanner to scan for us, the default scanner in the vuzix
 	private final static String SCANNER_APP="com.google.zxing.client.android.SCAN";
 	//name for the extra data for next intent
-	protected final static String TIMETABLE_DATA="timetableData";
+	public final static String TIMETABLE_DATA="timetableData";
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
