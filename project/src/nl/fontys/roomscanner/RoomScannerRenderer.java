@@ -19,7 +19,6 @@ public class RoomScannerRenderer implements GLSurfaceView.Renderer {
 	private ElementFree mFree;
 
 	private ElementOccupied mOccupiedBg;
-	private ElementOccupied mOccupiedFg;
 
 	private boolean free = false;
 	private String roomNumber;
@@ -58,7 +57,6 @@ public class RoomScannerRenderer implements GLSurfaceView.Renderer {
 		if (free) {
 			mFree.draw(gl);
 		} else {
-			mOccupiedFg.draw();
 			mOccupiedBg.draw();
 		}
 
@@ -93,8 +91,7 @@ public class RoomScannerRenderer implements GLSurfaceView.Renderer {
 		gl.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
 		mFree = new ElementFree();
-		mOccupiedBg = new ElementOccupied(false);
-		mOccupiedFg = new ElementOccupied(true);
+		mOccupiedBg = new ElementOccupied();
 	}
 	
 	public static int loadShader(int type, String shaderCode){
