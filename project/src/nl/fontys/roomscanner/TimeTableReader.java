@@ -17,14 +17,19 @@ public class TimeTableReader {
 	 * @return data for room
 	 */
 	public ArrayList<String> readTimeTableDataForRoom(String room) {
-		Log.d(this.getClass().getName(), "reasding time table data");
+		Log.d(this.getClass().getName(), "reading time table data");
 
 		ArrayList<String> data = new ArrayList<String>();
-		if(room.equals("w1.186")) {
+		data.add("room");
+		if(room.equals("W1-1.86")) {
 			data.add("free");
+			data.add("");
+			data.add("");
 		}
 		else {
 			data.add("occupied");
+			data.add("GRAP");
+			data.add("JAC");
 		}
 		//TODO impl, arraylist is easy to transfer to other intents, but it can be changed to whatever fits the timetable
 	

@@ -3,12 +3,8 @@ package nl.fontys.roomscanner;
 import java.util.ArrayList;
 
 import android.app.Activity;
-import android.os.Bundle;
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -21,6 +17,10 @@ public class MainActivity extends Activity {
 		private final static String SCANNER_APP="com.google.zxing.client.android.SCAN";
 		//name for the extra data for next intent
 		public final static String TIMETABLE_DATA="timetableData";
+		
+		private final static String SCAN_R_F="SCAN_RESULT_FORMAT";
+		
+		private final static String SCAN_R="SCAN_RESULT";
 		@Override
 		protected void onCreate(Bundle savedInstanceState) {
 			super.onCreate(savedInstanceState);
@@ -33,7 +33,6 @@ public class MainActivity extends Activity {
 		/**
 		 * what happens when the button is clicked
 		 * 
-		 *
 		 */
 	    private class HandleClick implements OnClickListener{
 	    	public void onClick(View arg0) {
@@ -41,6 +40,9 @@ public class MainActivity extends Activity {
 	    	}
 	    }
 
+	    /**
+	     * starts the internal App 'Scanner'
+	     */
 	    public void scan() {
 	      	Intent intent = new Intent(SCANNER_APP);         
 	        intent.putExtra("SCAN_MODE", "QR_CODE_MODE");
@@ -48,21 +50,21 @@ public class MainActivity extends Activity {
 	    }
 	  /*  
 	    /**
-	     * scanning
+	     * process scan results
 	     */
 	    public void onActivityResult(int requestCode, int resultCode, Intent intent) {
 	   	 Button butQR = (Button )findViewById(R.id.butQR);
 	    	if (requestCode == 0) {
 	    
-	              TextView tvStatus=(TextView)findViewById(R.id.tvStatus);
+	           //   TextView tvStatus=(TextView)findViewById(R.id.tvStatus);
 	     
-	            TextView tvResult=(TextView)findViewById(R.id.tvResult);
+	           // TextView tvResult=(TextView)findViewById(R.id.tvResult);
 	     
 	            if (resultCode == RESULT_OK) {
 	       
-	            	tvStatus.setText(intent.getStringExtra("SCAN_RESULT_FORMAT"));
-	            	String scanResult = intent.getStringExtra("SCAN_RESULT");
-	            	butQR.setText(scanResult);
+	            //	tvStatus.setText(intent.getStringExtra(SCAN_R_F));
+	            	String scanResult = intent.getStringExtra(SCAN_R);
+	            	//butQR.setText(scanResult);
 	            	showTimeTableData(scanResult);
 	            	
 	         
@@ -86,12 +88,19 @@ public class MainActivity extends Activity {
 			TimeTableReader ttReader = new  TimeTableReader();
 			ArrayList<String> data = ttReader.readTimeTableDataForRoom(scanResult);
 			if(!data.isEmpty()) {
-			Intent intent = new Intent(this, RenderActivity.class);
-			intent.putStringArrayListExtra(TIMETABLE_DATA, data);
-			startActivity(intent);
+			startRenderActivity(data);
 			}
 			else {
 				scan();
 			}
+		}
+		/**
+		 * start new activity
+		 * @param data from timetable reader
+		 */
+		private void startRenderActivity(ArrayList<String> data) {
+			Intent intent = new Intent(this, RenderActivity.class);
+			intent.putStringArrayListExtra(TIMETABLE_DATA, data);
+			startActivity(intent);
 		}
 	}

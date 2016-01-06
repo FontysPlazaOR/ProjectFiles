@@ -5,9 +5,9 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 /**
- * A two-dimensional triangle for use as a drawn object in OpenGL ES 1.0/1.1.
+ * Element that should be displayed if the room is occupied
  */
-public class Triangle {
+public class ElementOccupied {
 
     private final FloatBuffer vertexBuffer;
 
@@ -20,12 +20,12 @@ public class Triangle {
             0.5f, -0.311004243f, 0.0f // bottom right
     };
 
-    float color[] = { 0.63671875f, 0.76953125f, 0.22265625f, 0.0f };
+    float color[] = { 1f, 0f, 0f, 0.0f };
 
     /**
      * Sets up the drawing object data for use in an OpenGL ES context.
      */
-    public Triangle() {
+    public ElementOccupied() {
         // initialize vertex byte buffer for shape coordinates
         ByteBuffer bb = ByteBuffer.allocateDirect(
                 // (number of coordinate values * 4 bytes per float)
