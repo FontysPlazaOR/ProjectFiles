@@ -58,8 +58,8 @@ public class RoomScannerRenderer implements GLSurfaceView.Renderer {
 		if (free) {
 			mFree.draw(gl);
 		} else {
-			mOccupiedBg.draw();
 			mOccupiedFg.draw();
+			mOccupiedBg.draw();
 		}
 
 		// Create a rotation for the triangle

@@ -32,8 +32,8 @@ public class ElementOccupied {
 	};
 	static float fgTriangleCoords[] = { // in counterclockwise order:
 			0.0f, 0.5f, 0.0f, // top
-			-0.4f, -0.4f, 0.0f, // bottom left
-			0.4f, -0.4f, 0.0f // bottom right
+			-0.6f, -0.4f, 0.0f, // bottom left
+			0.6f, -0.4f, 0.0f // bottom right
 	};
 
 	// Set color with red, green, blue and alpha (opacity) values
@@ -56,7 +56,7 @@ public class ElementOccupied {
 		// initialize vertex byte buffer for shape coordinates
 		ByteBuffer bb = ByteBuffer.allocateDirect(
 				// (number of coordinate values * 4 bytes per float)
-				bgTriangleCoords.length * 4);
+				this.small ? fgTriangleCoords.length : bgTriangleCoords.length * 4);
 		// use the device hardware's native byte order
 		bb.order(ByteOrder.nativeOrder());
 
