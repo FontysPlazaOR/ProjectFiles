@@ -3,6 +3,7 @@ package nl.fontys.roomscanner;
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
+import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
 import android.opengl.GLU;
 
@@ -29,7 +30,6 @@ public class RoomScannerRenderer implements GLSurfaceView.Renderer {
 		this.roomNumber = roomNumber;
 		this.lecturer = lecturer;
 		this.module = module;
-		
 	}
 
 	/**
@@ -43,7 +43,6 @@ public class RoomScannerRenderer implements GLSurfaceView.Renderer {
 
 	@Override
 	public void onDrawFrame(GL10 gl) {
-
 		// Draw background color
 		gl.glClear(GL10.GL_COLOR_BUFFER_BIT | GL10.GL_DEPTH_BUFFER_BIT);
 
@@ -58,7 +57,7 @@ public class RoomScannerRenderer implements GLSurfaceView.Renderer {
 		if (free) {
 			mFree.draw(gl);
 		} else {
-			mOccupied.draw(gl);
+			mOccupied.draw();
 		}
 
 		// Create a rotation for the triangle
@@ -93,6 +92,19 @@ public class RoomScannerRenderer implements GLSurfaceView.Renderer {
 
 		mFree = new ElementFree();
 		mOccupied = new ElementOccupied();
+	}
+	
+	public static int loadShader(int type, String shaderCode){
+
+	    // create a vertex shader type (GLES20.GL_VERTEX_SHADER)
+	    // or a fragment shader type (GLES20.GL_FRAGMENT_SHADER)
+	    int shader = GLES20.glCreateShader(type);
+
+	    // add the source code to the shader and compile it
+	    GLES20.glShaderSource(shader, shaderCode);
+	    GLES20.glCompileShader(shader);
+
+	    return shader;
 	}
 
 	/**
