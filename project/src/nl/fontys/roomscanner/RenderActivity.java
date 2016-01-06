@@ -34,10 +34,7 @@ public class RenderActivity extends Activity {
 	 * @return
 	 */
 	private boolean isRoomFree() {
-		if (getData().get(1).contains("free")) {
-			return true;
-		}
-		return false;
+		return getData().get(1).contains("free");
 	}
 
 	@Override

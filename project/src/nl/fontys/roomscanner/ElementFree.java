@@ -13,13 +13,13 @@ import javax.microedition.khronos.opengles.GL10;
 public class ElementFree {
 
 	// number of coordinates per vertex in this array
-	static final int COORDS_PER_VERTEX = 3;
-	static float squareCoords[] = { -0.5f, 0.5f, 0.0f, // top left
+	private static final int COORDS_PER_VERTEX = 3;
+	private static float squareCoords[] = { -0.5f, 0.5f, 0.0f, // top left
 			-0.5f, -0.5f, 0.0f, // bottom left
 			0.5f, -0.5f, 0.0f, // bottom right
 			0.5f, 0.5f, 0.0f }; // top right
 
-	float color[] = { 0f, 1f, 0f, 1.0f };
+	private float color[] = { 0f, 1f, 0f, 1.0f };
 	private final ShortBuffer drawListBuffer;
 
 	private final short drawOrder[] = { 0, 1, 2, 0, 2, 3 }; // order to draw

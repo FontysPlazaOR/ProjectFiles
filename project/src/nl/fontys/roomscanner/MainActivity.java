@@ -10,16 +10,6 @@ import android.view.View.OnClickListener;
 
 public class MainActivity extends Activity {
 
-	/**
-	 * what happens when the button is clicked
-	 * 
-	 */
-	private class HandleClick implements OnClickListener {
-		public void onClick(View arg0) {
-			scan();
-		}
-	}
-
 	// Content of the scanned code
 	private final static String SCAN_R = "SCAN_RESULT";
 	// Format of the scanned code
@@ -29,6 +19,16 @@ public class MainActivity extends Activity {
 
 	// Name for the extra data for next intent
 	public final static String TIMETABLE_DATA = "timetableData";
+
+	/**
+	 * what happens when the button is clicked
+	 * 
+	 */
+	private class HandleClick implements OnClickListener {
+		public void onClick(View arg0) {
+			scan();
+		}
+	}
 
 	/*
 	 * /** process scan results

@@ -23,16 +23,16 @@ public class ElementOccupied {
 	private FloatBuffer vertexBuffer;
 
 	// number of coordinates per vertex in this array
-	static final int COORDS_PER_VERTEX = 3;
+	private static final int COORDS_PER_VERTEX = 3;
 
-	static float bgTriangleCoords[] = { // in counterclockwise order:
+	private static float bgTriangleCoords[] = { // in counterclockwise order:
 			0.0f, 0.6f, 0.0f, // top
-			-0.5f, -0.3f, 0.0f, // bottom left
-			0.5f, -0.3f, 0.0f // bottom right
+			-0.4f, -0.4f, 0.0f, // bottom left
+			0.4f, -0.4f, 0.0f // bottom right
 	};
 
 	// Set color with red, green, blue and alpha (opacity) values
-	float redColor[] = { 1f, 0f, 0f, 1.0f };
+	private float redColor[] = { 1f, 0f, 0f, 1.0f };
 
 	public ElementOccupied() {
 		// initialize vertex byte buffer for shape coordinates
