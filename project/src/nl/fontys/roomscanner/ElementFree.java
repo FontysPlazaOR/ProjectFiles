@@ -8,9 +8,9 @@ import java.nio.ShortBuffer;
 import javax.microedition.khronos.opengles.GL10;
 
 /**
- * A two-dimensional square for use as a drawn object in OpenGL ES 1.0/1.1.
+ * The element that should be displayed when the room is free
  */
-public class Square {
+public class ElementFree {
 
     private final FloatBuffer vertexBuffer;
     private final ShortBuffer drawListBuffer;
@@ -25,12 +25,12 @@ public class Square {
 
     private final short drawOrder[] = { 0, 1, 2, 0, 2, 3 }; // order to draw vertices
 
-    float color[] = { 0.2f, 0.709803922f, 0.898039216f, 1.0f };
+    float color[] = { 0f, 1f, 0f, 1.0f };
 
     /**
      * Sets up the drawing object data for use in an OpenGL ES context.
      */
-    public Square() {
+    public ElementFree() {
         // initialize vertex byte buffer for shape coordinates
         ByteBuffer bb = ByteBuffer.allocateDirect(
         // (# of coordinate values * 4 bytes per float)
@@ -66,8 +66,9 @@ public class Square {
         gl.glVertexPointer( // point to vertex data:
                 COORDS_PER_VERTEX,
                 GL10.GL_FLOAT, 0, vertexBuffer);
+      
         gl.glDrawElements(  // draw shape:
-                GL10.GL_TRIANGLES,
+                GL10.GL_LINE_LOOP,
                 drawOrder.length, GL10.GL_UNSIGNED_SHORT,
                 drawListBuffer);
 

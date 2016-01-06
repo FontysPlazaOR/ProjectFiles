@@ -11,10 +11,12 @@ import android.opengl.GLU;
  *
  */
 public class RoomScannerRenderer implements GLSurfaceView.Renderer  {
-    private Square mSquare;
+    
+	private ElementFree mFree;
+	private ElementOccupied mOccupied;
 	
 	private float mAngle;
-	private Triangle mTriangle;
+	
 	private boolean occupied=false;
     public RoomScannerRenderer(boolean occupied) {
 	this.occupied=occupied;
@@ -25,8 +27,8 @@ public class RoomScannerRenderer implements GLSurfaceView.Renderer  {
         // Set the background frame color
         gl.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
-        mSquare = new Square();
-        mTriangle = new Triangle();
+        mFree = new ElementFree();
+        mOccupied = new ElementOccupied();
     }
 
     @Override
@@ -42,12 +44,12 @@ public class RoomScannerRenderer implements GLSurfaceView.Renderer  {
         // When using GL_MODELVIEW, you must set the view point
         GLU.gluLookAt(gl, 0, 0, -3, 0f, 0f, 0f, 0f, 1.0f, 0.0f);
 
-        // Draw square
+        // Draw element
         if(occupied) {
-        mSquare.draw(gl);
+        mOccupied.draw(gl);
         }
         else {
-        	mTriangle.draw(gl);
+        	mFree.draw(gl);
         }
 
         // Create a rotation for the triangle

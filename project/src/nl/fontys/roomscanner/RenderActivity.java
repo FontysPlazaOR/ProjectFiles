@@ -3,27 +3,37 @@ package nl.fontys.roomscanner;
 import java.util.ArrayList;
 
 import android.app.Activity;
-import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.app.Activity;
 import android.content.Intent;
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
+
+
+/**
+ * a class that renders the elements
+ * @author max
+ *
+ */
 public class RenderActivity extends Activity {
 
 		private GLSurfaceView mGLView;
-		private ArrayList<String> data;
-		private boolean occupied=false;
+				
 		@Override
 		protected void onCreate(Bundle savedInstanceState) {
 			super.onCreate(savedInstanceState);
-			data=getData();
-			if(data.get(0).contains("free")) {
-				occupied=true;
-			}
-			mGLView = new RoomScannerSurfaceView(this,occupied);
+		
+			mGLView = new RoomScannerSurfaceView(this,isRoomFree());
 	        setContentView(mGLView);
+		}
+		
+		/**
+		 * is the room free?
+		 * @return
+		 */
+		private boolean isRoomFree() {
+			if(getData().get(1).contains("free")) {
+				return true;
+			}
+			return false;			
 		}
 
 		/**
@@ -32,10 +42,9 @@ public class RenderActivity extends Activity {
 		 */
 	    private ArrayList<String> getData() {
 	    	Intent intent = getIntent();
-	    	return intent.getStringArrayListExtra(MainActivity.TIMETABLE_DATA);
-	    	
-	    	
+	    	return intent.getStringArrayListExtra(MainActivity.TIMETABLE_DATA);	
 	    }
+	    
 	    @Override
 	    protected void onPause() {
 	        // The following call pauses the rendering thread.

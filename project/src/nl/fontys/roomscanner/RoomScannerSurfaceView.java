@@ -1,10 +1,6 @@
 package nl.fontys.roomscanner;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.content.Context;
-import android.content.Intent;
 import android.opengl.GLSurfaceView;
 
 public class RoomScannerSurfaceView   extends GLSurfaceView {
@@ -12,7 +8,6 @@ public class RoomScannerSurfaceView   extends GLSurfaceView {
 		private final RoomScannerRenderer mRenderer;
 
 		//data for the room
-		private ArrayList<String> data;
 	    public RoomScannerSurfaceView(Context context, boolean occupied) {
 	        super(context);
 
