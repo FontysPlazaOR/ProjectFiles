@@ -18,7 +18,8 @@ public class RoomScannerRenderer implements GLSurfaceView.Renderer {
 	private float mAngle;
 	private ElementFree mFree;
 
-	private ElementOccupied mOccupied;
+	private ElementOccupied mOccupiedBg;
+	private ElementOccupied mOccupiedFg;
 
 	private boolean free = false;
 	private String roomNumber;
@@ -57,7 +58,8 @@ public class RoomScannerRenderer implements GLSurfaceView.Renderer {
 		if (free) {
 			mFree.draw(gl);
 		} else {
-			mOccupied.draw();
+			mOccupiedBg.draw();
+			mOccupiedFg.draw();
 		}
 
 		// Create a rotation for the triangle
@@ -91,7 +93,8 @@ public class RoomScannerRenderer implements GLSurfaceView.Renderer {
 		gl.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
 		mFree = new ElementFree();
-		mOccupied = new ElementOccupied();
+		mOccupiedBg = new ElementOccupied(false);
+		mOccupiedFg = new ElementOccupied(true);
 	}
 	
 	public static int loadShader(int type, String shaderCode){
