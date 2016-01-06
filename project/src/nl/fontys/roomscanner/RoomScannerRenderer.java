@@ -19,10 +19,17 @@ public class RoomScannerRenderer implements GLSurfaceView.Renderer {
 
 	private ElementOccupied mOccupied;
 
-	private boolean occupied = false;
+	private boolean free = false;
+	private String roomNumber;
+	private String lecturer;
+	private String module;
 
-	public RoomScannerRenderer(boolean occupied) {
-		this.occupied = occupied;
+	public RoomScannerRenderer(boolean free, String roomNumber, String lecturer, String module) {
+		this.free = free;
+		this.roomNumber = roomNumber;
+		this.lecturer = lecturer;
+		this.module = module;
+		
 	}
 
 	/**
@@ -48,10 +55,10 @@ public class RoomScannerRenderer implements GLSurfaceView.Renderer {
 		GLU.gluLookAt(gl, 0, 0, -3, 0f, 0f, 0f, 0f, 1.0f, 0.0f);
 
 		// Draw element
-		if (occupied) {
-			mOccupied.draw(gl);
-		} else {
+		if (free) {
 			mFree.draw(gl);
+		} else {
+			mOccupied.draw(gl);
 		}
 
 		// Create a rotation for the triangle

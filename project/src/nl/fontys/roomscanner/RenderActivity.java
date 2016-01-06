@@ -24,6 +24,7 @@ public class RenderActivity extends Activity {
 	 */
 	private ArrayList<String> getData() {
 		Intent intent = getIntent();
+		
 		return intent.getStringArrayListExtra(MainActivity.TIMETABLE_DATA);
 	}
 
@@ -43,7 +44,7 @@ public class RenderActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		mGLView = new RoomScannerSurfaceView(this, isRoomFree());
+		mGLView = new RoomScannerSurfaceView(this, isRoomFree(), getData().get(0), getData().get(3), getData().get(2));
 		setContentView(mGLView);
 	}
 

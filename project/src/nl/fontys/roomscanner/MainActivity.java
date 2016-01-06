@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
-//import android.widget.Button;
 
 public class MainActivity extends Activity {
 
@@ -35,22 +34,12 @@ public class MainActivity extends Activity {
 	 * /** process scan results
 	 */
 	public void onActivityResult(int requestCode, int resultCode, Intent intent) {
-		// Button butQR = (Button) findViewById(R.id.butQR);
-		if (requestCode == 0) {
-
-			// TextView tvStatus=(TextView)findViewById(R.id.tvStatus);
-			// TextView tvResult=(TextView)findViewById(R.id.tvResult);
-
-			if (resultCode == RESULT_OK) {
-				// tvStatus.setText(intent.getStringExtra(SCAN_R_F));
-				String scanResult = intent.getStringExtra(SCAN_R);
-				// butQR.setText(scanResult);
-				showTimeTableData(scanResult);
-			} else if (resultCode == RESULT_CANCELED) {
-				scan();
-			}
+		if (resultCode == RESULT_OK) {
+			String scanResult = intent.getStringExtra(SCAN_R);
+			showTimeTableData(scanResult);
+		} else if (resultCode == RESULT_CANCELED) {
+			scan();
 		}
-
 	}
 
 	@Override
@@ -80,6 +69,7 @@ public class MainActivity extends Activity {
 	private void showTimeTableData(String scanResult) {
 		TimeTableReader ttReader = new TimeTableReader();
 		ArrayList<String> data = ttReader.readTimeTableDataForRoom(scanResult);
+
 		if (!data.isEmpty()) {
 			startRenderActivity(data);
 		} else {
