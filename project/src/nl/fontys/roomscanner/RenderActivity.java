@@ -4,8 +4,11 @@ import java.util.ArrayList;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
+import android.view.ViewGroup;
+import android.widget.TextView;
 
 /**
  * a class that renders the elements
@@ -44,8 +47,16 @@ public class RenderActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		mGLView = new RoomScannerSurfaceView(this, isRoomFree(), getData().get(0), getData().get(3), getData().get(2));
+		mGLView = new RoomScannerSurfaceView(this, isRoomFree());
 		setContentView(mGLView);
+		TextView text = new TextView(this);
+		text.setTextColor(Color.WHITE);
+		String textString = getData().get(0)+" is free? "+isRoomFree();
+		if(!isRoomFree()) {
+			textString+=", "+getData().get(2)+" teached by "+getData().get(3);	
+		}
+		text.setText(textString);		
+		addContentView(text, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
 	}
 
 	@Override

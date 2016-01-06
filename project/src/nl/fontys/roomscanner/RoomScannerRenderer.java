@@ -24,7 +24,7 @@ public class RoomScannerRenderer implements GLSurfaceView.Renderer {
 	private String lecturer;
 	private String module;
 
-	public RoomScannerRenderer(boolean free, String roomNumber, String lecturer, String module) {
+	public RoomScannerRenderer(boolean free) {
 		this.free = free;
 		this.roomNumber = roomNumber;
 		this.lecturer = lecturer;
