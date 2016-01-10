@@ -1,11 +1,19 @@
 package nl.fontys.roomscanner;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import com.vuzix.hardware.GestureSensor;
+
+import android.R.color;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
+import android.view.ViewGroup;
+import android.widget.TextView;
 
 /**
  * a class that renders the elements
@@ -40,9 +48,20 @@ public class RenderActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
-		mGLView = new RoomScannerSurfaceView(this, isRoomFree(), getData().get(0), getData().get(3), getData().get(2));
+		mGLView = new RoomScannerSurfaceView(this,true);
 		setContentView(mGLView);
+		
+		List<String> data = getData();
+		String content="room "+data.get(0)+" is free? "+isRoomFree();
+		if(!isRoomFree()) {
+			content+=" , "+data.get(2)+" teached by "+data.get(3);
+		}
+		
+		TextView infos=new TextView(this);
+		infos.setText(content);
+		infos.setTextSize(24);
+		infos.setTextColor(Color.WHITE);
+		addContentView(infos, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
 	}
 
 	@Override
@@ -64,3 +83,4 @@ public class RenderActivity extends Activity {
 		mGLView.onResume();
 	}
 }
+

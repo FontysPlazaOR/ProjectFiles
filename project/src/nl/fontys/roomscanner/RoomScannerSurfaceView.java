@@ -1,22 +1,27 @@
 package nl.fontys.roomscanner;
 
+import com.vuzix.hardware.GestureSensor;
+
 import android.content.Context;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
 import android.opengl.GLSurfaceView;
+import android.view.MotionEvent;
 
 public class RoomScannerSurfaceView extends GLSurfaceView {
 
-		// data for the room
-	public RoomScannerSurfaceView(Context context, boolean free, String roomNumber, String lecturer, String module) {
-		super(context);
+	private final RoomScannerRenderer mRenderer;
 
-		// Create an OpenGL ES 2.0 context
-        setEGLContextClientVersion(2);
-		
-		// Set the Renderer for drawing on the GLSurfaceView
-        final RoomScannerRenderer mRenderer = new RoomScannerRenderer(free, roomNumber, lecturer, module);
-		setRenderer(mRenderer);
+	    public RoomScannerSurfaceView(Context context,boolean free) {
+	        super(context);
 
-		// Render the view only when there is a change in the drawing data
-		setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
+			// Set the Renderer for drawing on the GLSurfaceView
+			mRenderer = new RoomScannerRenderer(free,context);
+			setRenderer(mRenderer);
+			
+			// Render the view only when there is a change in the drawing data
+			setRenderMode(GLSurfaceView.RENDERMODE_CONTINUOUSLY);
+	       
+
+	    }
 	}
-}

@@ -3,33 +3,31 @@ package nl.fontys.roomscanner;
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
+import com.vuzix.hardware.GestureSensor;
+
+import android.content.Context;
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
 import android.opengl.GLU;
 
 /**
- * Provides drawing instructions for a GLSurfaceView object
+ * Provides drawing instructions 
  * 
  * @author max
  *
  */
 public class RoomScannerRenderer implements GLSurfaceView.Renderer {
-
-	private float mAngle;
+	private float mAngle = 45;
 	private ElementFree mFree;
-
 	private ElementOccupied mOccupiedBg;
+	private boolean free = false; //display opening/closing door
+	private Context context;
+	private static float speedCube = 0.2f; // Rotational speed 
+	private boolean closed = true;
 
-	private boolean free = false;
-	private String roomNumber;
-	private String lecturer;
-	private String module;
-
-	public RoomScannerRenderer(boolean free, String roomNumber, String lecturer, String module) {
+	public RoomScannerRenderer(boolean free, Context contex) {
 		this.free = free;
-		this.roomNumber = roomNumber;
-		this.lecturer = lecturer;
-		this.module = module;
+		this.context = contex;
 	}
 
 	/**
@@ -43,6 +41,7 @@ public class RoomScannerRenderer implements GLSurfaceView.Renderer {
 
 	@Override
 	public void onDrawFrame(GL10 gl) {
+
 		// Draw background color
 		gl.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
 
@@ -55,20 +54,35 @@ public class RoomScannerRenderer implements GLSurfaceView.Renderer {
 
 		// Draw element
 		if (free) {
-			mFree.draw(gl);
+			gl.glRotatef(mAngle, 0, 0.0f, 0);
+			if (closed) {
+				mFree.draw(gl, closed);
+				closed = false;
+			} else {
+				mFree.draw(gl, closed);
+				closed = true;
+			}
+
 		} else {
 			mOccupiedBg.draw();
 		}
 
-		// Create a rotation for the triangle
+		// Create a rotation
+		// mAngle += speedCube;
 
-		// Use the following code to generate constant rotation.
-		// Leave this code out when using TouchEvents.
-		// long time = SystemClock.uptimeMillis() % 4000L;
-		// float angle = 0.090f * ((int) time);
+	}
 
-		gl.glRotatef(mAngle, 0.0f, 0.0f, 1.0f);
+	public static int loadShader(int type, String shaderCode) {
 
+		// create a vertex shader type (GLES20.GL_VERTEX_SHADER)
+		// or a fragment shader type (GLES20.GL_FRAGMENT_SHADER)
+		int shader = GLES20.glCreateShader(type);
+
+		// add the source code to the shader and compile it
+		GLES20.glShaderSource(shader, shaderCode);
+		GLES20.glCompileShader(shader);
+
+		return shader;
 	}
 
 	@Override
@@ -93,23 +107,7 @@ public class RoomScannerRenderer implements GLSurfaceView.Renderer {
 		mFree = new ElementFree();
 		mOccupiedBg = new ElementOccupied();
 	}
-	
-	public static int loadShader(int type, String shaderCode){
 
-	    // create a vertex shader type (GLES20.GL_VERTEX_SHADER)
-	    // or a fragment shader type (GLES20.GL_FRAGMENT_SHADER)
-	    int shader = GLES20.glCreateShader(type);
-
-	    // add the source code to the shader and compile it
-	    GLES20.glShaderSource(shader, shaderCode);
-	    GLES20.glCompileShader(shader);
-
-	    return shader;
-	}
-
-	/**
-	 * Sets the rotation angle of the triangle shape (mTriangle).
-	 */
 	public void setAngle(float angle) {
 		mAngle = angle;
 	}
