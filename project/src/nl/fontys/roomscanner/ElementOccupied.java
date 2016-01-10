@@ -3,98 +3,137 @@ package nl.fontys.roomscanner;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
+import java.nio.ShortBuffer;
 
 import javax.microedition.khronos.opengles.GL10;
-
-import android.opengl.GLES20;
 
 /**
  * Element that should be displayed if the room is occupied
  */
 public class ElementOccupied {
-	private final String vertexShaderCode = "attribute vec4 vPosition;" + "void main() {" + "  gl_Position = vPosition;"
-			+ "}";
-
-	private final String fragmentShaderCode = "precision mediump float;" + "uniform vec4 vColor;" + "void main() {"
-			+ "  gl_FragColor = vColor;" + "}";
-
-	private final int mProgram;
-
-	private FloatBuffer vertexBuffer;
 
 	// number of coordinates per vertex in this array
-	private static final int COORDS_PER_VERTEX = 3;
+	static final int COORDS_PER_VERTEX = 3;
 
-	private static float bgTriangleCoords[] = { // in counterclockwise order:
-			0.0f, 0.6f, 0.0f, // top
-			-0.4f, -0.4f, 0.0f, // bottom left
-			0.4f, -0.4f, 0.0f // bottom right
+	static float doorFrameCoords[] = { -0.6f, 0.8f, 0.0f, // top left
+			-0.6f, -0.6f, 0.0f, // bottom left
+			0.6f, -0.6f, 0.0f, // bottom right
+			0.6f, 0.8f, 0.0f }; // top right
+	static float doorCoords[] = { -0.5f, 0.7f, 0.0f, // top left
+			-0.5f, -0.5f, 0.0f, // bottom left
+			0.5f, -0.5f, 0.0f, // bottom right
+			0.5f, 0.7f, 0.0f }; // top right
+	static float triangleCoords[] = {
+			// in counterclockwise order:
+			0.0f, 0.422008459f, 0.0f, // top
+			-0.3f, -0.111004243f, 0.0f, // bottom left
+			0.3f, -0.111004243f, 0.0f // bottom right
 	};
+	float colorFrame[] = { 0.2f, 0.709803922f, 0.898039216f, 1.0f };
+	float colorDoor[] = { 1f, 1f, 0f, 1.0f };
+	float colorTriangle[] = { 1f, 0f, 0f, 1.0f };
 
-	// Set color with red, green, blue and alpha (opacity) values
-	private float redColor[] = { 1f, 0f, 0f, 1.0f };
+	private final ShortBuffer drawListBuffer;
+	private final short drawOrder[] = { 0, 1, 2, 0, 2, 3 }; // order to draw
 
+	private final FloatBuffer vertexBuffer;
+	private final FloatBuffer vertexBuffer2;
+	private final FloatBuffer vertexBuffer3;
+
+	/**
+	 * Sets up the drawing object data for use in an OpenGL ES context.
+	 */
 	public ElementOccupied() {
+
 		// initialize vertex byte buffer for shape coordinates
 		ByteBuffer bb = ByteBuffer.allocateDirect(
-				// (number of coordinate values * 4 bytes per float)
-				bgTriangleCoords.length * 4);
-		// use the device hardware's native byte order
+				// (# of coordinate values * 4 bytes per float)
+				doorFrameCoords.length * 4);
 		bb.order(ByteOrder.nativeOrder());
-
-		// create a floating point buffer from the ByteBuffer
 		vertexBuffer = bb.asFloatBuffer();
-		// add the coordinates to the FloatBuffer
-		vertexBuffer.put(bgTriangleCoords);
-		// set the buffer to read the first coordinate
+		vertexBuffer.put(doorFrameCoords);
 		vertexBuffer.position(0);
 
-		int vertexShader = RoomScannerRenderer.loadShader(GLES20.GL_VERTEX_SHADER, vertexShaderCode);
-		int fragmentShader = RoomScannerRenderer.loadShader(GLES20.GL_FRAGMENT_SHADER, fragmentShaderCode);
+		// initialize byte buffer for the draw list
+		ByteBuffer dlb = ByteBuffer.allocateDirect(
+				// (# of coordinate values * 2 bytes per short)
+				drawOrder.length * 2);
+		dlb.order(ByteOrder.nativeOrder());
+		drawListBuffer = dlb.asShortBuffer();
+		drawListBuffer.put(drawOrder);
+		drawListBuffer.position(0);
+		// 2
 
-		// create empty OpenGL ES Program
-		mProgram = GLES20.glCreateProgram();
+		// initialize vertex byte buffer for shape coordinates
+		ByteBuffer bb2 = ByteBuffer.allocateDirect(
+				// (# of coordinate values * 4 bytes per float)
+				doorCoords.length * 4);
+		bb2.order(ByteOrder.nativeOrder());
+		vertexBuffer2 = bb2.asFloatBuffer();
+		vertexBuffer2.put(doorCoords);
+		vertexBuffer2.position(0);
 
-		// add the vertex shader to program
-		GLES20.glAttachShader(mProgram, vertexShader);
+		// initialize vertex byte buffer for shape coordinates
+		ByteBuffer bb3 = ByteBuffer.allocateDirect(
+				// (number of coordinate values * 4 bytes per float)
+				triangleCoords.length * 4);
+		// use the device hardware's native byte order
+		bb3.order(ByteOrder.nativeOrder());
 
-		// add the fragment shader to program
-		GLES20.glAttachShader(mProgram, fragmentShader);
-
-		// creates OpenGL ES program executables
-		GLES20.glLinkProgram(mProgram);
+		// create a floating point buffer from the ByteBuffer
+		vertexBuffer3 = bb3.asFloatBuffer();
+		// add the coordinates to the FloatBuffer
+		vertexBuffer3.put(triangleCoords);
+		// set the buffer to read the first coordinate
+		vertexBuffer3.position(0);
 	}
 
-	private int mPositionHandle;
-	private int mColorHandle;
+	public void draw(GL10 gl) {
 
-	private final int vertexCount = bgTriangleCoords.length / COORDS_PER_VERTEX;
-	private final int vertexStride = COORDS_PER_VERTEX * 4; // 4 bytes per vertex
-	
-	public void draw() {
-		// Add program to OpenGL ES environment
-		GLES20.glUseProgram(mProgram);
+		drawSquare(gl, 1);
+		drawSquare(gl, 2);
 
-		// get handle to vertex shader's vPosition member
-		mPositionHandle = GLES20.glGetAttribLocation(mProgram, "vPosition");
+		drawTriangle(gl);
 
-		// Enable a handle to the triangle vertices
-		GLES20.glEnableVertexAttribArray(mPositionHandle);
+	}
 
-		// Prepare the triangle coordinate data
-		GLES20.glVertexAttribPointer(mPositionHandle, COORDS_PER_VERTEX, GLES20.GL_FLOAT, false, vertexStride,
-				vertexBuffer);
+	public void drawSquare(GL10 gl, int nr) {
+		// Since this shape uses vertex arrays, enable them
+		gl.glEnableClientState(GL10.GL_VERTEX_ARRAY);
 
-		// get handle to fragment shader's vColor member
-		mColorHandle = GLES20.glGetUniformLocation(mProgram, "vColor");
+		// draw the shape
+		if (nr == 1) {
+			gl.glColor4f( // set color
+					colorFrame[0], colorFrame[1], colorFrame[2], colorFrame[3]);
 
-		// Set color for drawing the triangle
-		GLES20.glUniform4fv(mColorHandle, 1, redColor, 0);
+			gl.glVertexPointer( // point to vertex data:
+					COORDS_PER_VERTEX, GL10.GL_FLOAT, 0, vertexBuffer);
 
-		// Draw the triangle
-		GLES20.glDrawArrays(GLES20.GL_TRIANGLES, 0, vertexCount);
+		} else {
+			gl.glColor4f( // set color
+					colorDoor[0], colorDoor[1], colorDoor[2], colorDoor[3]);
+			gl.glVertexPointer( // point to vertex data:
+					COORDS_PER_VERTEX, GL10.GL_FLOAT, 0, vertexBuffer2);
+		}
 
-		// Disable vertex array
-		GLES20.glDisableVertexAttribArray(mPositionHandle);
+		gl.glDrawElements( // draw shape:
+				GL10.GL_TRIANGLES, drawOrder.length, GL10.GL_UNSIGNED_SHORT, drawListBuffer);
+
+		// Disable vertex array drawing to avoid
+		// conflicts with shapes that don't use it
+		gl.glDisableClientState(GL10.GL_VERTEX_ARRAY);
+	}
+
+	public void drawTriangle(GL10 gl) {
+		gl.glEnableClientState(GL10.GL_VERTEX_ARRAY);
+
+		gl.glColor4f( // set color:
+				colorTriangle[0], colorTriangle[1], colorTriangle[2], colorTriangle[3]);
+		gl.glVertexPointer( // point to vertex data:
+				COORDS_PER_VERTEX, GL10.GL_FLOAT, 0, vertexBuffer3);
+		gl.glDrawArrays( // draw shape:
+				GL10.GL_TRIANGLES, 0, triangleCoords.length / COORDS_PER_VERTEX);
+
+		gl.glDisableClientState(GL10.GL_VERTEX_ARRAY);
 	}
 }

@@ -10,7 +10,7 @@ import android.view.View.OnClickListener;
 
 public class MainActivity extends Activity {
 
-	// Content of the scanned code
+	/// Content of the scanned code
 	private final static String SCAN_R = "SCAN_RESULT";
 	// Format of the scanned code
 	// private final static String SCAN_R_F = "SCAN_RESULT_FORMAT";

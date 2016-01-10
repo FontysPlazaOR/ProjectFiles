@@ -3,41 +3,26 @@ package nl.fontys.roomscanner;
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
-import com.vuzix.hardware.GestureSensor;
-
-import android.content.Context;
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
 import android.opengl.GLU;
 
 /**
- * Provides drawing instructions 
+ * Provides drawing instructions for a GLSurfaceView object
  * 
  * @author max
  *
  */
 public class RoomScannerRenderer implements GLSurfaceView.Renderer {
-	private float mAngle = 45;
 	private ElementFree mFree;
 	private ElementOccupied mOccupiedBg;
-	private boolean free = false; //display opening/closing door
-	private Context context;
-	private static float speedCube = 0.2f; // Rotational speed 
+	private boolean free = false;
 	private boolean closed = true;
 
-	public RoomScannerRenderer(boolean free, Context contex) {
+	public RoomScannerRenderer(boolean free) {
 		this.free = free;
-		this.context = contex;
 	}
 
-	/**
-	 * Returns the rotation angle of the triangle shape (mTriangle).
-	 *
-	 * @return - A float representing the rotation angle.
-	 */
-	public float getAngle() {
-		return mAngle;
-	}
 
 	@Override
 	public void onDrawFrame(GL10 gl) {
@@ -54,7 +39,6 @@ public class RoomScannerRenderer implements GLSurfaceView.Renderer {
 
 		// Draw element
 		if (free) {
-			gl.glRotatef(mAngle, 0, 0.0f, 0);
 			if (closed) {
 				mFree.draw(gl, closed);
 				closed = false;
@@ -63,26 +47,13 @@ public class RoomScannerRenderer implements GLSurfaceView.Renderer {
 				closed = true;
 			}
 
-		} else {
-			mOccupiedBg.draw();
+		} else
+
+		{
+			mOccupiedBg.draw(gl);
+
 		}
 
-		// Create a rotation
-		// mAngle += speedCube;
-
-	}
-
-	public static int loadShader(int type, String shaderCode) {
-
-		// create a vertex shader type (GLES20.GL_VERTEX_SHADER)
-		// or a fragment shader type (GLES20.GL_FRAGMENT_SHADER)
-		int shader = GLES20.glCreateShader(type);
-
-		// add the source code to the shader and compile it
-		GLES20.glShaderSource(shader, shaderCode);
-		GLES20.glCompileShader(shader);
-
-		return shader;
 	}
 
 	@Override
@@ -106,9 +77,5 @@ public class RoomScannerRenderer implements GLSurfaceView.Renderer {
 
 		mFree = new ElementFree();
 		mOccupiedBg = new ElementOccupied();
-	}
-
-	public void setAngle(float angle) {
-		mAngle = angle;
 	}
 }
