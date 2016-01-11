@@ -1,6 +1,7 @@
 package nl.fontys.roomscanner;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -27,7 +28,7 @@ public class RenderActivity extends Activity {
 	 */
 	private ArrayList<String> getData() {
 		Intent intent = getIntent();
-		
+
 		return intent.getStringArrayListExtra(MainActivity.TIMETABLE_DATA);
 	}
 
@@ -37,43 +38,42 @@ public class RenderActivity extends Activity {
 	 * @return
 	 */
 	private boolean isRoomFree() {
-		if (getData().get(1).contains("free")) {
-			return true;
-		}
-		return false;
+		return getData().get(1).contains("free");
 	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
 		mGLView = new RoomScannerSurfaceView(this, isRoomFree());
-		setContentView(mGLView);
-		TextView text = new TextView(this);
-		text.setTextColor(Color.WHITE);
-		String textString = getData().get(0)+" is free? "+isRoomFree();
-		if(!isRoomFree()) {
-			textString+=", "+getData().get(2)+" teached by "+getData().get(3);	
+		setContentView(mGLView); // the picture
+		addContentView(createInfosFromIntent(),
+				new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)); // the
+																														// text
+	}
+
+	public TextView createInfosFromIntent() {
+		List<String> data = getData();
+		String content = "12:20 - 13:55 |room " + data.get(0) + " is free? " + isRoomFree();
+		if (!isRoomFree()) {
+			content += " , " + data.get(2) + " teached by " + data.get(3);
 		}
-		text.setText(textString);		
-		addContentView(text, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+		TextView infos = new TextView(this);
+		infos.setText(content);
+		infos.setTextSize(18);
+		infos.setTextColor(Color.WHITE);
+		return infos;
 	}
 
 	@Override
 	protected void onPause() {
-		// The following call pauses the rendering thread.
-		// If your OpenGL application is memory intensive,
-		// you should consider de-allocating objects that
-		// consume significant memory here.
+
 		super.onPause();
 		mGLView.onPause();
 	}
 
 	@Override
 	protected void onResume() {
-		// The following call resumes a paused rendering thread.
-		// If you de-allocated graphic objects for onPause()
-		// this is a good place to re-allocate them.
+
 		super.onResume();
 		mGLView.onResume();
 	}

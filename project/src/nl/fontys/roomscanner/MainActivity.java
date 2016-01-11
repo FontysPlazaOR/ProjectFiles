@@ -10,6 +10,16 @@ import android.view.View.OnClickListener;
 
 public class MainActivity extends Activity {
 
+	/// Content of the scanned code
+	private final static String SCAN_R = "SCAN_RESULT";
+	// Format of the scanned code
+	// private final static String SCAN_R_F = "SCAN_RESULT_FORMAT";
+	// QR Scanner to scan for us, the default scanner in the Vuzix
+	private final static String SCANNER_APP = "com.google.zxing.client.android.SCAN";
+
+	// Name for the extra data for next intent
+	public final static String TIMETABLE_DATA = "timetableData";
+
 	/**
 	 * what happens when the button is clicked
 	 * 
@@ -19,16 +29,6 @@ public class MainActivity extends Activity {
 			scan();
 		}
 	}
-
-	// Content of the scanned code
-	private final static String SCAN_R = "SCAN_RESULT";
-	// Format of the scanned code
-	// private final static String SCAN_R_F = "SCAN_RESULT_FORMAT";
-	// QR Scanner to scan for us, the default scanner in the Vuzix
-	private final static String SCANNER_APP = "com.google.zxing.client.android.SCAN";
-
-	// Name for the extra data for next intent
-	public final static String TIMETABLE_DATA = "timetableData";
 
 	/*
 	 * /** process scan results

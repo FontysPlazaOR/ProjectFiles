@@ -7,6 +7,7 @@ import android.util.Log;
 
 /*
  * a class to read the time table data
+ * currently: only mocking the output
  */
 public class TimeTableReader {
 

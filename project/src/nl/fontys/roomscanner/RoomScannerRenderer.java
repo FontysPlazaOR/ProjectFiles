@@ -3,6 +3,7 @@ package nl.fontys.roomscanner;
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
+import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
 import android.opengl.GLU;
 
@@ -13,39 +14,21 @@ import android.opengl.GLU;
  *
  */
 public class RoomScannerRenderer implements GLSurfaceView.Renderer {
-
-	private float mAngle;
 	private ElementFree mFree;
-
-	private ElementOccupied mOccupied;
-
+	private ElementOccupied mOccupiedBg;
 	private boolean free = false;
-	private String roomNumber;
-	private String lecturer;
-	private String module;
+	private boolean closed = true;
 
 	public RoomScannerRenderer(boolean free) {
 		this.free = free;
-		this.roomNumber = roomNumber;
-		this.lecturer = lecturer;
-		this.module = module;
-		
 	}
 
-	/**
-	 * Returns the rotation angle of the triangle shape (mTriangle).
-	 *
-	 * @return - A float representing the rotation angle.
-	 */
-	public float getAngle() {
-		return mAngle;
-	}
 
 	@Override
 	public void onDrawFrame(GL10 gl) {
 
 		// Draw background color
-		gl.glClear(GL10.GL_COLOR_BUFFER_BIT | GL10.GL_DEPTH_BUFFER_BIT);
+		gl.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
 
 		// Set GL_MODELVIEW transformation mode
 		gl.glMatrixMode(GL10.GL_MODELVIEW);
@@ -56,19 +39,20 @@ public class RoomScannerRenderer implements GLSurfaceView.Renderer {
 
 		// Draw element
 		if (free) {
-			mFree.draw(gl);
-		} else {
-			mOccupied.draw(gl);
+			if (closed) {
+				mFree.draw(gl, closed);
+				closed = false;
+			} else {
+				mFree.draw(gl, closed);
+				closed = true;
+			}
+
+		} else
+
+		{
+			mOccupiedBg.draw(gl);
+
 		}
-
-		// Create a rotation for the triangle
-
-		// Use the following code to generate constant rotation.
-		// Leave this code out when using TouchEvents.
-		// long time = SystemClock.uptimeMillis() % 4000L;
-		// float angle = 0.090f * ((int) time);
-
-		gl.glRotatef(mAngle, 0.0f, 0.0f, 1.0f);
 
 	}
 
@@ -92,13 +76,6 @@ public class RoomScannerRenderer implements GLSurfaceView.Renderer {
 		gl.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
 		mFree = new ElementFree();
-		mOccupied = new ElementOccupied();
-	}
-
-	/**
-	 * Sets the rotation angle of the triangle shape (mTriangle).
-	 */
-	public void setAngle(float angle) {
-		mAngle = angle;
+		mOccupiedBg = new ElementOccupied();
 	}
 }
