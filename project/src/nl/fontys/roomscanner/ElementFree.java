@@ -1,7 +1,5 @@
 package nl.fontys.roomscanner;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
@@ -9,14 +7,14 @@ import java.nio.ShortBuffer;
 
 import javax.microedition.khronos.opengles.GL10;
 
+
 /**
  * The element that should be displayed when the room is free
  */
 public class ElementFree {
 
 
-	    float color[] = { 0.2f, 0.709803922f, 0.898039216f, 1.0f };
-
+	    float colorFrame[] = { 0.2f, 0.709803922f, 0.898039216f, 1.0f };
 	// number of coordinates per vertex in this array
 	static final int COORDS_PER_VERTEX = 3;
 
@@ -36,7 +34,6 @@ public class ElementFree {
 	// vertices
 	private final FloatBuffer vertexBuffer;
 	private final FloatBuffer vertexBuffer2;
-
 	/**
 	 * Sets up the drawing object data for use in an OpenGL ES context.
 	 */
@@ -69,6 +66,8 @@ public class ElementFree {
         vertexBuffer2 = bb2.asFloatBuffer();
         vertexBuffer2.put(doorCoords);
         vertexBuffer2.position(0);
+
+		
 	}
 	public void draw(GL10 gl, boolean closed) {
 		
@@ -83,6 +82,7 @@ public class ElementFree {
 
 		gl.glDrawElements( // draw shape:
 				GL10.GL_TRIANGLES, drawOrder.length, GL10.GL_UNSIGNED_SHORT, drawListBuffer);
+
 		// Disable vertex array drawing to avoid
 		// conflicts with shapes that don't use it
 		gl.glDisableClientState(GL10.GL_VERTEX_ARRAY);
@@ -106,25 +106,6 @@ public class ElementFree {
 		// Disable vertex array drawing to avoid
 		// conflicts with shapes that don't use it
 		gl.glDisableClientState(GL10.GL_VERTEX_ARRAY);
-		// Since this shape uses vertex arrays, enable them
-		gl.glEnableClientState(GL10.GL_VERTEX_ARRAY);
-		
-		// draw the shape
-		gl.glColor4f( // set color
-				color2[0], color2[1], color2[2], color2[3]);
-		if(closed) {
-		gl.glVertexPointer( // point to vertex data:
-				COORDS_PER_VERTEX, GL10.GL_FLOAT, 0, vertexBuffer2);
-		}
-		else{
-			gl.glVertexPointer( // point to vertex data:
-					COORDS_PER_VERTEX, GL10.GL_FLOAT, 0, vertexBuffer);	
-		}
-		gl.glDrawElements( // draw shape:
-				GL10.GL_TRIANGLES, drawOrder.length, GL10.GL_UNSIGNED_SHORT, drawListBuffer2);
-
-		// Disable vertex array drawing to avoid
-		// conflicts with shapes that don't use it
-		gl.glDisableClientState(GL10.GL_VERTEX_ARRAY);
 	}
+
 }
