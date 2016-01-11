@@ -13,25 +13,25 @@ import javax.microedition.khronos.opengles.GL10;
 public class ElementOccupied {
 
 	// number of coordinates per vertex in this array
-	static final int COORDS_PER_VERTEX = 3;
+	private static final int COORDS_PER_VERTEX = 3;
 
-	static float doorFrameCoords[] = { -0.6f, 0.8f, 0.0f, // top left
+	private static float doorFrameCoords[] = { -0.6f, 0.8f, 0.0f, // top left
 			-0.6f, -0.6f, 0.0f, // bottom left
 			0.6f, -0.6f, 0.0f, // bottom right
 			0.6f, 0.8f, 0.0f }; // top right
-	static float doorCoords[] = { -0.5f, 0.7f, 0.0f, // top left
+	private static float doorCoords[] = { -0.5f, 0.7f, 0.0f, // top left
 			-0.5f, -0.5f, 0.0f, // bottom left
 			0.5f, -0.5f, 0.0f, // bottom right
 			0.5f, 0.7f, 0.0f }; // top right
-	static float triangleCoords[] = {
+	private static float triangleCoords[] = {
 			// in counterclockwise order:
 			0.0f, 0.422008459f, 0.0f, // top
 			-0.3f, -0.111004243f, 0.0f, // bottom left
 			0.3f, -0.111004243f, 0.0f // bottom right
 	};
-	float colorFrame[] = { 0.2f, 0.709803922f, 0.898039216f, 1.0f };
-	float colorDoor[] = { 1f, 1f, 0f, 1.0f };
-	float colorTriangle[] = { 1f, 0f, 0f, 1.0f };
+	private float colorFrame[] = { 0.2f, 0.709803922f, 0.898039216f, 1.0f };
+	private float colorDoor[] = { 1f, 1f, 0f, 1.0f };
+	private float colorTriangle[] = { 1f, 0f, 0f, 1.0f };
 
 	private final ShortBuffer drawListBuffer;
 	private final short drawOrder[] = { 0, 1, 2, 0, 2, 3 }; // order to draw
