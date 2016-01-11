@@ -53,13 +53,13 @@ public class RenderActivity extends Activity {
 
 	public TextView createInfosFromIntent() {
 		List<String> data = getData();
-		String content = "room " + data.get(0) + " is free? " + isRoomFree();
+		String content = "12:20 - 13:55 |room " + data.get(0) + " is free? " + isRoomFree();
 		if (!isRoomFree()) {
 			content += " , " + data.get(2) + " teached by " + data.get(3);
 		}
 		TextView infos = new TextView(this);
 		infos.setText(content);
-		infos.setTextSize(24);
+		infos.setTextSize(18);
 		infos.setTextColor(Color.WHITE);
 		return infos;
 	}
